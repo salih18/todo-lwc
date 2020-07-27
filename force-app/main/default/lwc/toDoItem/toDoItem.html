@@ -1,0 +1,21 @@
+<template>
+  <lightning-layout class={isCompleted} multiple-rows vertical-align="center">
+    <lightning-layout-item size="10" class="slds-text-align_left">
+      <div class="slds-text-heading_label">{todo.name}</div>
+    </lightning-layout-item>
+    <lightning-layout-item size="2" alignment-bump="right">
+      <lightning-button-icon
+        icon-name={iconName}
+        onclick={updateHandler}
+        title="Update Todo"
+      >
+      </lightning-button-icon>
+      <lightning-button-icon
+        icon-name="utility:delete"
+        onclick={deleteHandler}
+        title="Delete Todo"
+      >
+      </lightning-button-icon>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>
