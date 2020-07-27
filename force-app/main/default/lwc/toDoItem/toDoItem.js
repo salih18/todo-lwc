@@ -11,14 +11,22 @@ export default class ToDoItem extends LightningElement {
       name: this.todo.name,
       done: !this.todo.done
     };
-    const id = await updateTodo({ payload: JSON.stringify(todo) });
-    const updateEvent = new CustomEvent("update", { detail: { id } });
-    this.dispatchEvent(updateEvent);
+    try {
+      const id = await updateTodo({ payload: JSON.stringify(todo) });
+      const updateEvent = new CustomEvent("update", { detail: { id } });
+      this.dispatchEvent(updateEvent);
+    } catch (error) {
+      console.log(error);
+    }
   }
   async deleteHandler() {
-    const id = await deleteTodo({ todoId: this.todo.id });
-    const deleteEvent = new CustomEvent("delete", { detail: { id } });
-    this.dispatchEvent(deleteEvent);
+    try {
+      const id = await deleteTodo({ todoId: this.todo.id });
+      const deleteEvent = new CustomEvent("delete", { detail: { id } });
+      this.dispatchEvent(deleteEvent);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   get isCompleted() {

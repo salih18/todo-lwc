@@ -1,6 +1,5 @@
 import { LightningElement, track } from "lwc";
 import addTodo from "@salesforce/apex/ToDoController.addTodo";
-import getAllTodos from "@salesforce/apex/ToDoController.getAllTodos";
 import getCurrentTodos from "@salesforce/apex/ToDoController.getCurrentTodos";
 
 export default class ToDoManager extends LightningElement {
@@ -35,7 +34,7 @@ export default class ToDoManager extends LightningElement {
   }
 
   setGreeting(hour) {
-    if (hour < 12) {
+    if (hour < 12 && hour > 6) {
       this.greeting = "Good Morning";
     } else if (hour >= 12 && hour < 17) {
       this.greeting = "Good Afternoon";
@@ -47,11 +46,14 @@ export default class ToDoManager extends LightningElement {
       name: input.value,
       done: false
     };
-
-    const response = await addTodo({ payload: JSON.stringify(todo) });
-    const newTodo = JSON.parse(response);
-    this.todos.unshift(newTodo);
-    input.value = "";
+    try {
+      const response = await addTodo({ payload: JSON.stringify(todo) });
+      const newTodo = JSON.parse(response);
+      this.todos.unshift(newTodo);
+      input.value = "";
+    } catch (error) {
+      console.log(error);
+    }
   }
   get upcomingTasks() {
     const tasks = this.todos.filter((t) => !t.done);
@@ -75,6 +77,11 @@ export default class ToDoManager extends LightningElement {
   }
 
   async fetchTodos() {
-    await getCurrentTodos();
+    try {
+      const todos = await getCurrentTodos();
+      this.todos = todos;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
